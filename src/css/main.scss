@@ -1,0 +1,90 @@
+//pre-defined classes
+.border {
+  border: 1px solid red;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
+.flex-warp {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-space {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+//pre-defined variables
+* {
+  --white: #ffffffe1;
+  --black: rgb(43, 43, 43);
+  --navBlack: rgb(35, 35, 35);
+}
+
+//---------------------------SingIn-------------------------
+.signin-container {
+  .google-btn {
+    background-color: white;
+    color: var(--black);
+    text-transform: none;
+    border: none;
+    box-shadow: none;
+    font-weight: 600;
+    border: 1px solid #827e7e;
+    &:hover {
+      background-color: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+      transform: scale(1.03);
+      transition: 0.2s;
+      .google-icon {
+        margin: 30px;
+      }
+    }
+  }
+  .signin-btn {
+    background-color: var(--navBlack);
+    color: var(--white);
+    &:hover {
+      background-color: rgb(57, 55, 55);
+      color: var(--white);
+      border-color: var(--black);
+      transform: scale(1.03);
+      transition: 0.2s;
+    }
+  }
+}
+
+//---------------------------------NAV----------------------
+.nav-container {
+  .nav {
+    background-color: var(--navBlack);
+    .login-btn {
+      padding: 10px 20px;
+      color: white;
+      border-radius: 30px;
+    }
+    .profilepicture-container {
+      .img-rounded {
+        border-radius: 50%;
+      }
+    }
+  }
+}
