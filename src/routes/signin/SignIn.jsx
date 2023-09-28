@@ -33,6 +33,7 @@ export default function SignIn() {
   const location = useLocation();
   const dispatch = useDispatch();
 
+  const loggedIn = useSelector((state) => state.authReducer.loggedIn);
   const [passType, setPassType] = useState("password");
   const [user, setUser] = useState([]);
 
@@ -53,6 +54,9 @@ export default function SignIn() {
           .then((res) => res.json())
           .then((res) => {
             dispatch(setGoogleUser({ googleUser: res }));
+            if (loggedIn) {
+              navigate("/home");
+            }
           })
           .catch((err) => {
             console.log(err);

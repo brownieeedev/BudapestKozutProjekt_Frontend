@@ -76,6 +76,9 @@
 .nav-container {
   .nav {
     background-color: var(--navBlack);
+    div {
+      font-family: "Geologica", sans-serif;
+    }
     .login-btn {
       padding: 10px 20px;
       color: white;
@@ -85,6 +88,23 @@
       .img-rounded {
         border-radius: 50%;
       }
+    }
+  }
+}
+
+// ----------------------- HOME -----------------------
+.home-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+  justify-content: center;
+  .newscard {
+    cursor: pointer;
+    width: 100%;
+    &:hover {
+      transform: scale(1.01);
+      transition: 0.3s;
     }
   }
 }
