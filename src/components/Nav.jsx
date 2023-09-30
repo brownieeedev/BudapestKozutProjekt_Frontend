@@ -51,6 +51,10 @@ export default function Nav() {
     navigate("/signin");
   };
 
+  const handleNavigateToNews = () => {
+    navigate("/news");
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar className="nav-container" position="static">
@@ -64,7 +68,12 @@ export default function Nav() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            onClick={handleNavigateToNews}
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, cursor: "pointer" }}
+          >
             News
           </Typography>
           {!loggedIn ? (

@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
+//MUI
+
 export default function NewsCard() {
   return (
     <Card className="newscard" sx={{ maxWidth: 345 }}>

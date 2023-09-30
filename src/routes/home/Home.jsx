@@ -5,8 +5,13 @@ import Container from "@mui/material/Container";
 
 //Elements
 import NewsCard from "../../components/NewsCard";
+import DropUp from "../../components/DropUp";
+
+//Redux
+import { useSelector } from "react-redux";
 
 export default function Home() {
+  const loggedIn = useSelector((state) => state.authReducer.loggedIn);
   return (
     <React.Fragment>
       <CssBaseline />
@@ -17,6 +22,7 @@ export default function Home() {
           <NewsCard />
           <NewsCard />
         </Box>
+        {loggedIn && <DropUp />}
       </Container>
     </React.Fragment>
   );

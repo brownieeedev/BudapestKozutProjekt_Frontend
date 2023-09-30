@@ -55,7 +55,7 @@ export default function SignIn() {
           .then((res) => {
             dispatch(setGoogleUser({ googleUser: res }));
             if (loggedIn) {
-              navigate("/home");
+              navigate("/news");
             }
           })
           .catch((err) => {

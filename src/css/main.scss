@@ -108,3 +108,64 @@
     }
   }
 }
+
+//-------------------- DROPUP ----------------------
+.addbtn-container {
+  .add-btn {
+    background-color: rgb(18, 17, 17);
+    // display: flex;
+    position: fixed;
+    z-index: 10;
+    bottom: 20px;
+    right: 20px;
+    align-items: center;
+    border-radius: 50%;
+    // &:hover {
+    //   border: 1px solid rgb(18, 17, 17);
+    // }
+    margin: 10px;
+    .add-icon {
+      font-size: 50px;
+      color: white;
+      box-sizing: initial;
+      padding: 2px;
+      &:hover {
+        color: rgb(18, 17, 17);
+      }
+    }
+  }
+}
+
+//---------------------- CreateNews --------------------
+.createnews-container {
+  .createnews-form {
+    .submit-btn {
+      width: 100%;
+      background-color: var(--black);
+      color: white;
+      padding: 11px;
+      font-size: 17px;
+
+      &:hover {
+        transform: scale(1.01);
+        transition: 0.2s;
+        background-color: rgb(66, 65, 65);
+      }
+    }
+    .dragndrop-container {
+      .dragndrop {
+        display: flex;
+        justify-content: center;
+        margin: auto;
+        width: 100%;
+        .dragndrop-title {
+          //continue here
+        }
+        label {
+          width: 100%;
+          height: 60px;
+        }
+      }
+    }
+  }
+}
