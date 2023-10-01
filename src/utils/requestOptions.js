@@ -84,6 +84,12 @@ export const getRequestOptionsForRefresh = () => {
   };
 };
 
+export const basicPostRequest = {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: {},
+};
+
 // //const requestOptions = {
 //     method: "GET",
 //     headers: { "Content-Type": "application/json" },

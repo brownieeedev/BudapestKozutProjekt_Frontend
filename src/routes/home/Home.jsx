@@ -17,10 +17,26 @@ export default function Home() {
       <CssBaseline />
       <Container maxWidth="lg">
         <Box className="home-box" sx={{ height: "auto" }}>
-          <NewsCard />
-          <NewsCard />
-          <NewsCard />
-          <NewsCard />
+          <NewsCard
+            title="Article"
+            date="September, 10, 2023"
+            body="This is the body"
+          />
+          <NewsCard
+            title="Article"
+            date="September, 10, 2023"
+            body="This is the body"
+          />
+          <NewsCard
+            title="Article"
+            date="September, 10, 2023"
+            body="This is the body"
+          />
+          <NewsCard
+            title="Article"
+            date="September, 10, 2023"
+            body="This is the body"
+          />
         </Box>
         {loggedIn && <DropUp />}
       </Container>

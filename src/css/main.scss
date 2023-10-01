@@ -31,11 +31,32 @@
   align-items: center;
   justify-content: flex-end;
 }
+.responsive {
+  width: 100%;
+  height: auto;
+}
 //pre-defined variables
 * {
   --white: #ffffffe1;
   --black: rgb(43, 43, 43);
   --navBlack: rgb(35, 35, 35);
+}
+.full-width {
+  width: 100%;
+}
+.basic-btn {
+  width: 100%;
+  background-color: var(--black);
+  color: white;
+  padding: 11px;
+  font-size: 17px;
+  margin: 10px 0;
+
+  &:hover {
+    transform: scale(1.01);
+    transition: 0.2s;
+    background-color: rgb(66, 65, 65);
+  }
 }
 
 //---------------------------SingIn-------------------------
@@ -101,7 +122,6 @@
   justify-content: center;
   .newscard {
     cursor: pointer;
-    width: 100%;
     &:hover {
       transform: scale(1.01);
       transition: 0.3s;
@@ -138,32 +158,178 @@
 
 //---------------------- CreateNews --------------------
 .createnews-container {
-  .createnews-form {
-    .submit-btn {
-      width: 100%;
-      background-color: var(--black);
-      color: white;
-      padding: 11px;
-      font-size: 17px;
+  max-width: 550px;
+  .form-preview-container {
+    gap: 15px;
+    .div-container {
+      .createnews-form {
+        margin: 10px 0;
+        padding: 10px 40px;
+        border-radius: 5px;
+        border: 1px solid rgb(238, 236, 236);
+        background-color: rgb(247, 247, 247);
+        textarea,
+        label {
+          font-family: "Geologica", Roboto, sans-serif;
+          font-weight: 300;
+        }
+        .dragndrop-container {
+          .dragndrop {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            .dragndrop-title {
+              font-family: "Geologica", Roboto, sans-serif;
+              font-weight: 300;
+              text-align: center;
+              strong {
+                font-weight: 600;
+              }
+            }
+            label {
+              width: 100%;
+              height: 60px;
+            }
+            .success-icon {
+              background-color: transparent;
+              padding: 0px 5px;
+            }
+            div {
+              margin: 0;
+            }
+          }
+        }
+        .submit-btn {
+          width: 100%;
+          background-color: var(--black);
+          color: white;
+          padding: 11px;
+          font-size: 17px;
+          margin: 10px 0;
 
-      &:hover {
-        transform: scale(1.01);
-        transition: 0.2s;
-        background-color: rgb(66, 65, 65);
+          &:hover {
+            transform: scale(1.01);
+            transition: 0.2s;
+            background-color: rgb(66, 65, 65);
+          }
+        }
+      }
+      .preview-container {
+        background-color: rgb(247, 247, 247);
+
+        margin: 10px 0;
+        padding: 10px 40px;
+        border-radius: 5px;
+        border: 1px solid rgb(238, 236, 236);
+        .preview-title {
+          font-family: "Geologica", sans-serif;
+          font-weight: 400;
+          font-size: 22px;
+          text-align: center;
+          margin: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .fa-circle-info {
+            margin: 0 10px;
+            font-size: 20px;
+          }
+        }
+        .basic-btn {
+          width: 100%;
+          background-color: var(--black);
+          color: white;
+          padding: 11px;
+          font-size: 17px;
+          margin: 10px 0;
+
+          &:hover {
+            transform: scale(1.01);
+            transition: 0.2s;
+            background-color: rgb(66, 65, 65);
+          }
+        }
+      }
+      .newscard {
+        background-color: rgb(253, 253, 253);
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+          rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+        // border: 1px solid rgb(231, 230, 230);
+        cursor: pointer;
+        &:hover {
+          transform: scale(1.01);
+          transition: 0.2s;
+        }
+        .card-header {
+          display: inline-block;
+          div {
+            span:first-child {
+              font-family: "Geologica", sans-serif;
+              font-size: 25px;
+            }
+            span:last-child {
+              font-family: "Geologica", sans-serif;
+              font-size: 13px;
+            }
+          }
+        }
+        .author-container {
+          margin-top: 10px;
+          p {
+            margin: 0;
+          }
+          .category-container {
+            display: flex;
+            align-items: center;
+            p {
+              margin: 0;
+            }
+            span {
+              width: 40px;
+              height: 7px;
+              margin: 5px;
+            }
+          }
+        }
+        .card-footer {
+          padding: 10px;
+          display: flex;
+          align-items: center;
+          p {
+            font-family: "Roboto", sans-serif;
+            font-weight: 500;
+          }
+        }
+        .card-media {
+          img {
+            max-height: 300px;
+            width: auto;
+          }
+        }
       }
     }
-    .dragndrop-container {
-      .dragndrop {
-        display: flex;
-        justify-content: center;
-        margin: auto;
-        width: 100%;
-        .dragndrop-title {
-          //continue here
-        }
-        label {
-          width: 100%;
-          height: 60px;
+  }
+}
+
+// ----------------------- MEDIA -------------------------
+@media screen and (min-width: 1101px) {
+  .createnews-container {
+    min-width: 1100px;
+    margin: 10px;
+    padding: 0;
+    .form-preview-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .div-container {
+        width: 50%;
+        .preview-container {
+          .preview-title {
+            text-align: center;
+            margin: 10px;
+            font-weight: 400;
+          }
         }
       }
     }
