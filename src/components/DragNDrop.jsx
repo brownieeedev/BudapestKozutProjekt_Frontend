@@ -13,7 +13,6 @@ export default function DragNDrop({ coverImgChanges, otherImgChanges }) {
   const [alertMessage, setAlertMessage] = useState("");
 
   const handleCoverChange = (coverImg) => {
-    console.log(`coverImg inside handleCoverChange ${coverImg}`);
     coverImgChanges(coverImg);
     setShowCoverAlert(true);
   };
@@ -43,23 +42,6 @@ export default function DragNDrop({ coverImgChanges, otherImgChanges }) {
         )}
       </div>
       <hr />
-      <div className="dragndrop">
-        <Typography className="dragndrop-title">
-          Upload <strong>other images</strong> here
-        </Typography>
-        <FileUploader
-          multiple={true}
-          className="fileUploader"
-          handleChange={handleOtherImagesChange}
-          name="otherImg"
-          types={fileTypes}
-          label="Upload multiple images here if needed"
-          maxSize={0.5}
-        />
-        {showOtherImageAlert && (
-          <Alert severity="success" className="success-icon" />
-        )}
-      </div>
     </>
   );
 }

@@ -8,6 +8,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 //Elements
 import NewsCard from "./NewsCard";
+import LinearLoading from "./LinearLoading";
 
 const tooltip = (
   <Tooltip id="tooltip">
@@ -23,7 +24,13 @@ export default function Preview({
   date,
   category,
   handleSubmit,
+  loadingPostNewsFunction,
+  loadingPostNews,
 }) {
+  const handleSubmitInParent = () => {
+    handleSubmit();
+    loadingPostNewsFunction();
+  };
   return (
     <Container className="preview-container">
       <Typography className="preview-title">
@@ -42,11 +49,11 @@ export default function Preview({
         />
       </Box>
       <Box>
-        <Button onClick={handleSubmit} className="basic-btn">
-          POST NEWS
+        <Button onClick={handleSubmitInParent} className="basic-btn">
+          {loadingPostNews ? "NEW POST..." : "NEW POST"}
         </Button>
-        {/* <Typography className="preview-title">Preview article</Typography> */}
       </Box>
+      {loadingPostNews && <LinearLoading />}
     </Container>
   );
 }

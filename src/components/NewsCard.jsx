@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Img } from "react-image";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 //MUI
 import Card from "@mui/material/Card";
@@ -51,11 +52,29 @@ export default function NewsCard({
   coverImgUrl,
   articleBody,
   category,
+  author,
 }) {
-  console.log(`inside NewsCard ${title} ${date} ${articleBody} ${coverImgUrl}`);
   const [shortenedBody, setShortenedBody] = useState("");
   const loggedIn = useSelector((state) => state.authReducer.loggedIn);
   const googleUser = useSelector((state) => state.authReducer.googleUser);
+
+  const [pubDate, setPubDate] = useState();
+
+  useEffect(() => {
+    if (date) {
+      let newDate = new Date(date);
+      newDate = newDate.toDateString();
+      setPubDate(newDate);
+    }
+  }, []);
+
+  const [currentUrl, setCurrentUrl] = useState("");
+  console.log(currentUrl);
+
+  useEffect(() => {
+    let path = window.location.href.split("/").slice(-1).join("");
+    setCurrentUrl(path);
+  }, []);
 
   useEffect(() => {
     if (articleBody && articleBody.length > 0) {
@@ -77,7 +96,7 @@ export default function NewsCard({
         flexDirection: "column",
       }}
     >
-      <CardHeader className="card-header" title={title} subheader={date} />
+      <CardHeader className="card-header" title={title} subheader={pubDate} />
       <div className="card-media">
         <ImgComponent coverImgUrl={coverImgUrl} />
       </div>
@@ -98,7 +117,7 @@ export default function NewsCard({
             {category}
           </Typography>
         </div>
-        {loggedIn && (
+        {loggedIn && currentUrl === "createnews" ? (
           <Typography
             sx={{
               fontSize: "11px",
@@ -108,6 +127,17 @@ export default function NewsCard({
             }}
           >
             written by: {googleUser.name}
+          </Typography>
+        ) : (
+          <Typography
+            sx={{
+              fontSize: "11px",
+              fontFamily: "Geologica",
+              fontWeight: 300,
+              marginTop: "5px",
+            }}
+          >
+            written by: {author}
           </Typography>
         )}
       </div>

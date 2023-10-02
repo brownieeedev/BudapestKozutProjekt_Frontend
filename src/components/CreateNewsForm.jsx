@@ -1,11 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
-import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
+
 //MUI
 import { Button, TextField, Typography, Alert, Box } from "@mui/material";
 
 //MUI animations
 import Fade from "@mui/material/Fade";
+
+//Bootstrap
+import Form from "react-bootstrap/Form";
 
 //Elements
 import DragNDrop from "./DragNDrop";
@@ -14,7 +18,7 @@ import SelectCategory from "./Select";
 import LinearLoading from "./LinearLoading";
 
 //Utils
-import { basicPostRequest } from "../utils/requestOptions";
+import { getItemFromLocalStorage } from "../utils/localStorage";
 
 //Redux
 import { useSelector } from "react-redux";
@@ -30,6 +34,7 @@ export default function CreateNewsForm() {
   const [category, setCategory] = useState("");
   const [createTemplate, setCreateTemplate] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingPostNews, setLoadingPostNews] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const [showAlert, setShowAlert] = useState(false);
@@ -37,6 +42,7 @@ export default function CreateNewsForm() {
   const [severity, setSeverity] = useState("");
 
   const previewRef = useRef();
+  const navigate = useNavigate();
 
   const loggedIn = useSelector((state) => state.authReducer.loggedIn);
 
@@ -55,6 +61,10 @@ export default function CreateNewsForm() {
     }, 1100);
   };
 
+  const loadingPostNewsFunction = () => {
+    setLoadingPostNews(true);
+  };
+
   const handleTemplateCreating = (e) => {
     e.preventDefault();
     setCreateTemplate(true);
@@ -67,27 +77,34 @@ export default function CreateNewsForm() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (title && articleBody && coverImg) {
-      if (!loggedIn) {
-        setShowModal(true);
-      }
       const formData = new FormData();
       formData.append("title", title);
       formData.append("articleBody", articleBody);
       formData.append("coverImg", coverImg);
-      formData.append("otherImages", otherImages);
+      formData.append("category", category);
+
+      const jwt = getItemFromLocalStorage("jwt");
 
       let reqOps = {
         method: "POST",
+        headers: {
+          authorization: `Bearer ${jwt}`,
+        },
         body: formData,
       };
 
       const fetchDataWithCoverImg = async () => {
         await fetch("/api/v1/news/create", reqOps)
           .then((res) => res.json())
-          .then((res) => console.log(res));
+          .then((res) => {
+            setLoadingPostNews(false);
+            if (res.status === "success") {
+              //successfull news creating navigate to news
+              navigate("/news?newscreated=true");
+            }
+          });
       };
 
       // const fetchDataWithOtherImg = asnyc()=>{
@@ -214,6 +231,8 @@ export default function CreateNewsForm() {
             date={date}
             category={category}
             handleSubmit={handleSubmit}
+            loadingPostNewsFunction={loadingPostNewsFunction}
+            loadingPostNews={loadingPostNews}
           />
         </div>
       )}

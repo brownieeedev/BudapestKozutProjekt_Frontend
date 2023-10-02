@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import SignIn from "./routes/signin/SignIn";
 import Home from "./routes/home/Home";
 import CreateNews from "./routes/createnews/CreateNews";
+import ManageNews from "./routes/managenews/ManageNews";
 
 //Other elements
 import Nav from "./components/Nav";
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/news" element={<Home />} />
         <Route path="/createnews" element={<CreateNews />} />
+        <Route path="/managenews" element={<ManageNews />} />
       </Routes>
     </div>
   );

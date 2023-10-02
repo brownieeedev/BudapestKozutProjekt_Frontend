@@ -32,6 +32,13 @@ export default function DropUp() {
     }
   };
 
+  const handleNavigateToManage = () => {
+    setAnchorEl(null);
+    if (loggedIn) {
+      navigate("/managenews");
+    }
+  };
+
   //   const handleNavigateToManage = () => {
   //     setAnchorEl(null);
   //     navigate("/managenews");
@@ -65,7 +72,7 @@ export default function DropUp() {
         }}
       >
         <MenuItem onClick={handleNavigateToPost}>Create news</MenuItem>
-        <MenuItem>Manage news</MenuItem>
+        <MenuItem onClick={handleNavigateToManage}>Manage news</MenuItem>
       </Menu>
     </div>
   );

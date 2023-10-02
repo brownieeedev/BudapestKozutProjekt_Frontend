@@ -1,8 +1,7 @@
 import * as React from "react";
 import { useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-//utils
-import { validateEmail, validatePassword } from "../../utils/validations";
+
 //MUI
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -19,6 +18,10 @@ import Alert from "@mui/material/Alert";
 import LoginIcon from "@mui/icons-material/Login";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
+//Utils
+import { validateEmail, validatePassword } from "../../utils/validations";
+import { setItemToLocalStorage } from "../../utils/localStorage";
+
 //Google Login
 import { useGoogleLogin } from "@react-oauth/google";
 
@@ -33,9 +36,25 @@ export default function SignIn() {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const loggedIn = useSelector((state) => state.authReducer.loggedIn);
   const [passType, setPassType] = useState("password");
   const [user, setUser] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const loggedIn = useSelector((state) => state.authReducer.loggedIn);
+  const googleUser = useSelector((state) => state.authReducer.googleUser);
+
+  useEffect(() => {
+    const urlSearchParams = new URLSearchParams(location.search);
+    const queryParams = Object.fromEntries(urlSearchParams.entries());
+
+    if (queryParams.protected === "true") {
+      setShowAlert(true);
+      setAlertMessage("Login to be able to create news!");
+    } else {
+      setShowAlert(false);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     if (user) {
@@ -70,11 +89,28 @@ export default function SignIn() {
     }
   }, [user]);
 
-  // const [showAlert, setShowAlert] = useState(false);
-  // const [message, setMessage] = useState("");
-  // const [signedUp, setSignedUp] = useState(false);
-  // const [sessionExpired, setSessionExpired] = useState(false);
-  // const [startRefreshLogic, setStartRefreshLogic] = useState(false);
+  useEffect(() => {
+    if (loggedIn === true) {
+      const fetchData = async () => {
+        const reqOps = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            googleUser,
+          }),
+        };
+        await fetch("/api/v1/users/login", reqOps)
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === "success") {
+              //backend sent back a jwt access token it needs to be saved into localStorage
+              setItemToLocalStorage(res.token);
+            }
+          });
+      };
+      fetchData();
+    }
+  }, [googleUser]);
 
   const googleLogin = useGoogleLogin({
     onSuccess: (res) => {
@@ -164,6 +200,11 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {showAlert && (
+            <Alert sx={{ m: 1 }} severity="warning">
+              {alertMessage}
+            </Alert>
+          )}
           <Box
             component="form"
             onSubmit={handleSubmit}
