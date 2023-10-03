@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 //MUI
-import { Typography, Grid } from "@mui/material";
+import { Typography, Grid, Alert } from "@mui/material";
 
 //Elements
 import NewsCard from "../../components/NewsCard";
@@ -9,26 +9,10 @@ import { Button } from "react-bootstrap";
 
 export default function ManageNews() {
   const [mynews, setMynews] = useState([]);
-  console.log(`mynews ${JSON.stringify(mynews)}`);
+  const [showAlert, setShowAlert] = useState(true);
+  const [alertMessage, setAlertMessage] = useState("");
 
-  const fetchMyNewsData = async () => {
-    const jwt = localStorage.getItem("jwt");
-    const reqOps = {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${jwt}`,
-      },
-    };
-    await fetch("/api/v1/news/getmynews", reqOps)
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.status === "success") {
-          console.log(res);
-          setMynews(res.news);
-        }
-      });
-  };
-
+  //initial fetch for mynews
   useEffect(() => {
     const fetchMyNewsData = async () => {
       const jwt = localStorage.getItem("jwt");
@@ -49,6 +33,16 @@ export default function ManageNews() {
     fetchMyNewsData();
   }, []);
 
+  //handling alert to only show for a few seconds and scroll to alert
+  useEffect(() => {
+    if (showAlert === true) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
+    }
+  }, [showAlert]);
+
   const handleDeleteNews = async (id) => {
     const fetchData = async () => {
       const jwt = localStorage.getItem("jwt");
@@ -58,12 +52,16 @@ export default function ManageNews() {
           authorization: `Bearer ${jwt}`,
         },
       };
-      const res = await fetch(`/api/v1/news/delete/${id}`, reqOps);
-
-      if (res.status === 204) {
-        console.log("inside fetch true statement");
-        setMynews((prevNews) => prevNews.filter((item) => item._id !== id));
-      }
+      await fetch(`/api/v1/news/delete/${id}`, reqOps)
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          if (res.status === "success") {
+            setMynews((prevNews) => prevNews.filter((item) => item._id !== id));
+            setShowAlert(true);
+            setAlertMessage("Successfully deleted an item!");
+          }
+        });
     };
     fetchData();
   };
@@ -74,6 +72,12 @@ export default function ManageNews() {
         Manage my news
       </Typography>
       <hr />
+
+      {showAlert && (
+        <Alert sx={{ m: 2 }} severity="success">
+          {alertMessage}
+        </Alert>
+      )}
 
       <Grid container className="card-box" spacing={2}>
         {mynews &&

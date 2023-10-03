@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 //MUI
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 export default function Home() {
   const loggedIn = useSelector((state) => state.authReducer.loggedIn);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(false);
@@ -61,6 +62,10 @@ export default function Home() {
     fetchData();
   }, []);
 
+  const handleArticleClick = (id) => {
+    navigate(`/news/${id}`);
+  };
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -72,7 +77,14 @@ export default function Home() {
         )}
         <Grid container className="home-grid" spacing={2}>
           {news.map((item) => (
-            <Grid item xs={12} sm={6} md={4} key={item.id}>
+            <Grid
+              onClick={() => handleArticleClick(item._id)}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              key={item._id}
+            >
               <NewsCard
                 title={item.title}
                 articleBody={item.articleBody}

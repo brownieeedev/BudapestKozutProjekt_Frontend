@@ -31,7 +31,7 @@ function getBackgroundColor(category) {
   }
 }
 
-const ImgComponent = ({ coverImgUrl }) => {
+export const ImgComponent = ({ coverImgUrl }) => {
   return (
     <Img
       className="responsive"
@@ -69,7 +69,6 @@ export default function NewsCard({
   }, []);
 
   const [currentUrl, setCurrentUrl] = useState("");
-  console.log(currentUrl);
 
   useEffect(() => {
     let path = window.location.href.split("/").slice(-1).join("");
