@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 //MUI
 import { Button, TextField, Typography, Alert, Box } from "@mui/material";
@@ -12,25 +11,27 @@ import Fade from "@mui/material/Fade";
 import Form from "react-bootstrap/Form";
 
 //Elements
-import DragNDrop from "./DragNDrop";
-import Preview from "./Preview";
-import SelectCategory from "./Select";
-import LinearLoading from "./LinearLoading";
+import DragNDrop from "../../components/DragNDrop";
+import Preview from "../../components/Preview";
+import SelectCategory from "../../components/Select";
+import LinearLoading from "../../components/LinearLoading";
 
 //Utils
-import { getItemFromLocalStorage } from "../utils/localStorage";
-
+import { getItemFromLocalStorage } from "../../utils/localStorage";
 //Redux
 import { useSelector } from "react-redux";
 
-export default function CreateNewsForm() {
-  //cím, kép, létrehozás dátuma, utolsó módosítás dátuma, szöveg , szerző
+//Elements
+export default function ManageArticle() {
+  const { id } = useParams();
+  const [article, setArticle] = useState("");
   const [coverImg, setCoverImg] = useState(null);
   const [coverImgUrl, setCoverImgUrl] = useState("");
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState();
   const [articleBody, setArticleBody] = useState("");
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
+  const [author, setAuthor] = useState("");
   const [createTemplate, setCreateTemplate] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingPostNews, setLoadingPostNews] = useState(false);
@@ -39,11 +40,46 @@ export default function CreateNewsForm() {
   const [alertMessage, setAlertMessage] = useState("");
   const [severity, setSeverity] = useState("");
 
-  const previewRef = useRef();
   const navigate = useNavigate();
-
   const loggedIn = useSelector((state) => state.authReducer.loggedIn);
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate("/signin?protected=true");
+    }
+  }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const reqOps = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      await fetch(`/api/v1/news/get/${id}`, reqOps)
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.status === "success") {
+            console.log(res);
+            const {
+              title,
+              category,
+              articleBody,
+              coverImg,
+              author,
+              publicationDate,
+            } = res.article;
+            setTitle(title);
+            setCategory(category);
+            setArticleBody(articleBody);
+            setCoverImgUrl(coverImg);
+            setAuthor(author);
+            setDate(publicationDate);
+          }
+        });
+    };
+    fetchData();
+  }, []);
   //date only for preview and scroll down functionality
   useEffect(() => {
     if (createTemplate === true) {
@@ -55,7 +91,7 @@ export default function CreateNewsForm() {
 
   const scrollDown = () => {
     setTimeout(() => {
-      previewRef?.current?.scrollIntoView({ behavior: "smooth" });
+      //   previewRef?.current?.scrollIntoView({ behavior: "smooth" });
     }, 1100);
   };
 
@@ -72,57 +108,6 @@ export default function CreateNewsForm() {
       setTimeout(() => {
         setLoading(false);
       }, 1000);
-    }
-  };
-
-  const handleSubmit = () => {
-    if (title && articleBody && coverImg) {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("articleBody", articleBody);
-      formData.append("coverImg", coverImg);
-      formData.append("category", category);
-
-      const jwt = getItemFromLocalStorage("jwt");
-
-      let reqOps = {
-        method: "POST",
-        headers: {
-          authorization: `Bearer ${jwt}`,
-        },
-        body: formData,
-      };
-
-      const fetchDataWithCoverImg = async () => {
-        await fetch("/api/v1/news/create", reqOps)
-          .then((res) => res.json())
-          .then((res) => {
-            setLoadingPostNews(false);
-            if (res.status === "success") {
-              //successfull news creating navigate to news
-              setTimeout(() => {
-                navigate("/news?newscreated=true");
-              }, 1000);
-            }
-          });
-      };
-
-      // const fetchDataWithOtherImg = asnyc()=>{
-      //   await fetch('/api/v1/news/otherImg')
-      // }
-
-      try {
-        fetchDataWithCoverImg();
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      //alert user that these fields are required
-      setSeverity("warning");
-      setAlertMessage(
-        " Missing fields! Title, the body of the article and a cover image is needed to create a new article!"
-      );
-      setShowAlert(true);
     }
   };
 
@@ -147,10 +132,54 @@ export default function CreateNewsForm() {
     setShowAlert(false);
   };
 
+  const handleSubmit = () => {
+    //Empty because now handleUpdate handles the fetch
+  };
+
+  const handleUpdate = () => {
+    if (title && articleBody && category) {
+      const jwt = getItemFromLocalStorage("jwt");
+      console.log(title, articleBody, category + " inside handleUpdate");
+      const reqOps = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${jwt}`,
+        },
+        body: JSON.stringify({ title, articleBody, category }),
+      };
+
+      const fetchUpdate = async () => {
+        await fetch(`/api/v1/news/update/${id}`, reqOps)
+          .then((res) => res.json())
+          .then((res) => {
+            setLoadingPostNews(false);
+            if (res.status === "success") {
+              //successfull news update navigate to news
+              navigate("/managenews");
+            }
+          });
+      };
+
+      try {
+        fetchUpdate();
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      //alert user that these fields are required
+      setSeverity("warning");
+      setAlertMessage(
+        " Missing fields! Title, the body of the article and a cover image is needed to create a new article!"
+      );
+      setShowAlert(true);
+    }
+  };
+
   return (
-    <div className="form-preview-container">
-      <div className="div-container">
-        <Form className="createnews-form" encType="multipart/form-data">
+    <div className="managearticle-container">
+      <div className="createnews-form">
+        <Form encType="multipart/form-data">
           <Typography
             sx={{
               fontFamily: "Geologica",
@@ -160,7 +189,7 @@ export default function CreateNewsForm() {
               margin: "10px",
             }}
           >
-            Create a new article
+            Update the article
           </Typography>
           <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
             <TextField
@@ -172,10 +201,14 @@ export default function CreateNewsForm() {
               multiline
               maxRows={1}
               value={title}
+              InputLabelProps={{ shrink: true }}
             />
           </Form.Group>
           <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
-            <SelectCategory handleCategoryChange={handleCategoryChange} />
+            <SelectCategory
+              handleCategoryChange={handleCategoryChange}
+              initialValue={category}
+            />
           </Form.Group>
           <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
             <TextField
@@ -189,12 +222,7 @@ export default function CreateNewsForm() {
               value={articleBody}
             />
           </Form.Group>
-          <Form.Group
-            className="mb-3 mt-3 dragndrop-container"
-            controlId="formBasicEmail"
-          >
-            <DragNDrop coverImgChanges={coverImgChanges} />
-          </Form.Group>
+
           {showAlert && (
             <Box sx={{ display: "flex" }}>
               <Fade in={showAlert}>
@@ -202,33 +230,32 @@ export default function CreateNewsForm() {
               </Fade>
             </Box>
           )}
-
           <Button
             onClick={handleTemplateCreating}
             className="submit-btn"
             type="submit"
-          >
-            {loading ? "Creating template..." : "Create template"}
-          </Button>
+          ></Button>
           {loading && <LinearLoading />}
         </Form>
       </div>
-      {createTemplate && !loading && (
-        <div className="div-container">
-          <Preview
-            title={title}
-            articleBody={articleBody}
-            coverImgUrl={coverImgUrl}
-            date={date}
-            category={category}
-            handleSubmit={handleSubmit}
-            loadingPostNewsFunction={loadingPostNewsFunction}
-            loadingPostNews={loadingPostNews}
-            showBtn={true}
-          />
-        </div>
-      )}
-      <div ref={previewRef}></div>
+
+      <div className="div-container">
+        <Preview
+          title={title}
+          articleBody={articleBody}
+          coverImgUrl={coverImgUrl}
+          date={date}
+          category={category}
+          handleSubmit={handleSubmit}
+          loadingPostNewsFunction={loadingPostNewsFunction}
+          loadingPostNews={loadingPostNews}
+          showBtn={false}
+          author={author}
+        />
+      </div>
+      <Button onClick={handleUpdate} className="basic-btn">
+        UPDATE NEWS
+      </Button>
     </div>
   );
 }

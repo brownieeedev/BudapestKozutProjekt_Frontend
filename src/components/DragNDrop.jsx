@@ -9,17 +9,10 @@ const fileTypes = ["JPG", "JPEG", "PNG", "GIF"];
 
 export default function DragNDrop({ coverImgChanges, otherImgChanges }) {
   const [showCoverAlert, setShowCoverAlert] = useState(false);
-  const [showOtherImageAlert, setShowOtherImageAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
 
   const handleCoverChange = (coverImg) => {
     coverImgChanges(coverImg);
     setShowCoverAlert(true);
-  };
-
-  const handleOtherImagesChange = (otherImages) => {
-    otherImgChanges(otherImages);
-    setShowOtherImageAlert(true);
   };
 
   return (

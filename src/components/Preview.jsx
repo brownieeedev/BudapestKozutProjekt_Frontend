@@ -26,6 +26,8 @@ export default function Preview({
   handleSubmit,
   loadingPostNewsFunction,
   loadingPostNews,
+  showBtn,
+  author,
 }) {
   const handleSubmitInParent = () => {
     handleSubmit();
@@ -46,12 +48,15 @@ export default function Preview({
           coverImgUrl={coverImgUrl}
           date={date}
           category={category}
+          author={author}
         />
       </Box>
       <Box>
-        <Button onClick={handleSubmitInParent} className="basic-btn">
-          {loadingPostNews ? "NEW POST..." : "NEW POST"}
-        </Button>
+        {showBtn && (
+          <Button onClick={handleSubmitInParent} className="basic-btn">
+            {loadingPostNews ? "NEW POST..." : "NEW POST"}
+          </Button>
+        )}
       </Box>
       {loadingPostNews && <LinearLoading />}
     </Container>

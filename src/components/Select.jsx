@@ -28,7 +28,7 @@ function getStyles(name, category, theme) {
   };
 }
 
-export default function SelectCategory({ handleCategoryChange }) {
+export default function SelectCategory({ handleCategoryChange, initialValue }) {
   const theme = useTheme();
   const [category, setcategory] = React.useState([]);
 
@@ -59,10 +59,11 @@ export default function SelectCategory({ handleCategoryChange }) {
           sx={{ fontFamily: "Geologica", fontWeight: 300 }}
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
-          value={category}
+          value={initialValue}
           onChange={handleChange}
           input={<OutlinedInput label="Category" />}
           MenuProps={MenuProps}
+          // value={initialValue}
         >
           {names.map((name) => (
             <MenuItem

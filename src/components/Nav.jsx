@@ -12,10 +12,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 //Mui icons
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 //Redux
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../redux/authSlice";
 
 export default function Nav() {
   const loggedIn = useSelector((state) => state.authReducer.loggedIn);
@@ -23,32 +25,17 @@ export default function Nav() {
 
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const requestOptions = {
-  //       method: "GET",
-  //       headers: {
-  //         // Authorization: `Bearer ${user.access_token}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     };
-  //     await fetch(googleUser.picture, requestOptions).then((res) =>
-  //       console.log(`response from useEffect fetch ${JSON.stringify(res)}`)
-  //     );
-  //   };
-  //   try {
-  //     fetchData();
-  //   } catch (err) {
-  //     setImgLoaded(false);
-  //     console.error(err);
-  //   }
-  // }, [googleUser]);
-
-  // console.log(`googleUser in Nav component ${JSON.stringify(googleUser)}`);
   //Events
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleNavigateToLogin = () => {
     navigate("/signin");
+  };
+
+  const handleLogout = () => {
+    //logout with state, and remove jwt from localStorage
+    dispatch(logout());
+    localStorage.removeItem("jwt");
   };
 
   const handleNavigateToNews = () => {
@@ -85,23 +72,26 @@ export default function Nav() {
               Login
             </Button>
           ) : (
-            <div className="profilepicture-container">
-              {imgLoaded ? (
-                <img
-                  className="img-rounded"
-                  src={googleUser.picture}
-                  alt="userimg"
-                />
-              ) : (
-                <>
-                  <AccountCircleIcon
-                    sx={{ fontSize: "30px", cursor: "pointer" }}
+            <div className="flex">
+              <div className="profilepicture-container">
+                {imgLoaded ? (
+                  <img
+                    className="img-rounded"
+                    src={googleUser.picture}
+                    alt="userimg"
                   />
-                  <Typography sx={{ fontSize: "10px" }}>
-                    {googleUser.given_name}
-                  </Typography>
-                </>
-              )}
+                ) : (
+                  <>
+                    <AccountCircleIcon
+                      sx={{ fontSize: "30px", cursor: "pointer" }}
+                    />
+                    <Typography sx={{ fontSize: "10px" }}>
+                      {googleUser.given_name}
+                    </Typography>
+                  </>
+                )}
+              </div>
+              <LogoutIcon onClick={handleLogout} className="logouticon" />
             </div>
           )}
         </Toolbar>

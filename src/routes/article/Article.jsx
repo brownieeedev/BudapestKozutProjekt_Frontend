@@ -58,54 +58,60 @@ export default function Article() {
     fetchData();
   }, []);
   return (
-    <div className="article-container">
+    <div className="article-container flex">
       <Typography sx={{ fontFamily: "Geologica", fontSize: "30px", m: 2 }}>
         {article.title}
+        <hr />
       </Typography>
-      <hr />
-      <Box sx={{ m: 6, mt: 0, mb: 0 }} className="flex-start">
-        {date}
-      </Box>
-      <Box sx={{ m: 6, mt: 1, mb: 0 }} className="img-container">
-        <ImgComponent coverImgUrl={article.coverImg} />
-      </Box>
-      <Box
-        sx={{ m: 6, mt: 1, mb: 0, display: "flex" }}
-        className="category-container"
-      >
-        <div className="flex">
-          <span
-            style={{ backgroundColor: getBackgroundColor(article.category) }}
-          ></span>
+
+      <div className="content-container">
+        <Box
+          sx={{ m: 6, mt: 0, mb: 0, maxWidth: "800px" }}
+          className="flex-start"
+        >
+          {date}
+        </Box>
+        <Box sx={{ m: 6, mt: 1, mb: 0 }} className="img-container">
+          <ImgComponent coverImgUrl={article.coverImg} />
+        </Box>
+        <Box
+          sx={{ m: 6, mt: 1, mb: 0, display: "flex" }}
+          className="category-container"
+        >
+          <div className="flex">
+            <span
+              style={{ backgroundColor: getBackgroundColor(article.category) }}
+            ></span>
+            <Typography
+              sx={{
+                fontSize: "13px",
+                fontFamily: "Geologica",
+                fontWeight: 300,
+                marginTop: "5px",
+              }}
+            >
+              {article.category}
+            </Typography>
+          </div>
+
           <Typography
             sx={{
-              fontSize: "13px",
+              fontSize: "11px",
               fontFamily: "Geologica",
               fontWeight: 300,
               marginTop: "5px",
             }}
           >
-            {article.category}
+            written by: {article.author}
           </Typography>
-        </div>
-
-        <Typography
-          sx={{
-            fontSize: "11px",
-            fontFamily: "Geologica",
-            fontWeight: 300,
-            marginTop: "5px",
-          }}
+        </Box>
+        <Box
+          sx={{ m: 6, mt: 1, textAlign: "justify" }}
+          className="article-container"
         >
-          written by: {article.author}
-        </Typography>
-      </Box>
-      <Box
-        sx={{ m: 6, mt: 1, textAlign: "justify" }}
-        className="article-container"
-      >
-        {article.articleBody}
-      </Box>
+          {article.articleBody}
+        </Box>
+      </div>
     </div>
   );
 }

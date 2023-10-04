@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //MUI
 import { Typography, Grid, Alert } from "@mui/material";
@@ -7,10 +8,21 @@ import { Typography, Grid, Alert } from "@mui/material";
 import NewsCard from "../../components/NewsCard";
 import { Button } from "react-bootstrap";
 
+//REDUX
+import { useSelector } from "react-redux";
+
 export default function ManageNews() {
   const [mynews, setMynews] = useState([]);
-  const [showAlert, setShowAlert] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+
+  const navigate = useNavigate();
+  const loggedIn = useSelector((state) => state.authReducer.loggedIn);
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate("/signin?protected=true");
+    }
+  }, []);
 
   //initial fetch for mynews
   useEffect(() => {
@@ -66,6 +78,10 @@ export default function ManageNews() {
     fetchData();
   };
 
+  const handleManageNews = (id) => {
+    navigate(`/manage/${id}`);
+  };
+
   return (
     <div className="managenews-container">
       <Typography sx={{ fontFamily: "Geologica", fontSize: "30px", m: 2 }}>
@@ -93,7 +109,12 @@ export default function ManageNews() {
                   author={item.author}
                 />
                 <div className="manage-buttons">
-                  <Button className="manage-btn">MANAGE</Button>
+                  <Button
+                    onClick={() => handleManageNews(item._id)}
+                    className="manage-btn"
+                  >
+                    UPDATE
+                  </Button>
                   <Button
                     onClick={() => handleDeleteNews(item._id)}
                     className="delete-btn"

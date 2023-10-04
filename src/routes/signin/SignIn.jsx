@@ -50,7 +50,7 @@ export default function SignIn() {
 
     if (queryParams.protected === "true") {
       setShowAlert(true);
-      setAlertMessage("Login to be able to create news!");
+      setAlertMessage("Login to be able to create and manage news!");
     } else {
       setShowAlert(false);
     }

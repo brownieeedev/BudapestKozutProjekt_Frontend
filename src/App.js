@@ -8,6 +8,7 @@ import Home from "./routes/home/Home";
 import CreateNews from "./routes/createnews/CreateNews";
 import ManageNews from "./routes/managenews/ManageNews";
 import Article from "./routes/article/Article";
+import ManageArticle from "./routes/managearticle/ManageArticle";
 
 //Other elements
 import Nav from "./components/Nav";
@@ -21,6 +22,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/news" element={<Home />} />
         <Route path="/news/:id" element={<Article />} />
+        <Route path="/manage/:id" element={<ManageArticle />} />
         <Route path="/createnews" element={<CreateNews />} />
         <Route path="/managenews" element={<ManageNews />} />
       </Routes>
