@@ -14,3 +14,6 @@ Create news with a template creator
 
 Manage your articles (update or delete)
 ![image](https://github.com/brownieeedev/BudapestKozutProjekt_Frontend/assets/130675477/f31d6d1e-cd3e-4244-9bdc-4ae099f08a9f)
+
+Update your article
+![image](https://github.com/brownieeedev/BudapestKozutProjekt_Frontend/assets/130675477/b4b78a8d-dd35-41ef-99c9-13af06356b66)
