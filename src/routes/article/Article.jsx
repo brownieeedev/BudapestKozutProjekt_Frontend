@@ -93,7 +93,6 @@ export default function Article() {
               {article.category}
             </Typography>
           </div>
-
           <Typography
             sx={{
               fontSize: "11px",
