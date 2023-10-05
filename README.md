@@ -17,3 +17,6 @@ Manage your articles (update or delete)
 
 Update your article
 ![image](https://github.com/brownieeedev/BudapestKozutProjekt_Frontend/assets/130675477/b4b78a8d-dd35-41ef-99c9-13af06356b66)
+
+Read specific article
+![image](https://github.com/brownieeedev/BudapestKozutProjekt_Frontend/assets/130675477/2c6875be-bb62-4814-a425-517e1e421241)
